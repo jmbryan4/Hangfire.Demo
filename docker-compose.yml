@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  hangfire.demo:
+    container_name: 'hangfire.demo'
+    image: ${DOCKER_REGISTRY-}hangfiredemo
+    build:
+      context: .
+      dockerfile: Hangfire.Demo/Dockerfile
+    depends_on:
+     - "postgres"
+    networks:
+      - backend
+
+  postgres:
+    container_name: 'postgres'
+    image: postgres
+    environment:
+      # change this for a "real" app
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: hangfire_demo
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
